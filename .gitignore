@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /.pnp
+/dist
+.parcel-cache
 .pnp.js
 
 # testing
@@ -21,3 +23,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
