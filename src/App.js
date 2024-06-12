@@ -2,17 +2,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import AutoComplete from "./components/AutoComplete";
 
-const staticData = [
-  "Bimbo",
-  "Bond Bread",
-  "Bost's Bread",
-  "Burry's",
-  "Dave's Killer Bread",
-  "Davidovich Bagels",
-  "Entenmann's",
-  "Holsum Bread",
-];
-
 function App() {
   const fetchSuggestion = async (query) => {
     const responce = await fetch(
@@ -30,7 +19,6 @@ function App() {
       <h1>Autosuggestion / Typeahead</h1>
       <AutoComplete
         placeholder={"Enter something..."}
-        // staticData={staticData}
         fetchList={fetchSuggestion}
         dataKey={"title"}
         customeLoading={<>Loading...</>}

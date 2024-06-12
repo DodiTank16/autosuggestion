@@ -4,7 +4,6 @@ import debounce from "lodash/debounce";
 
 const AutoComplete = ({
   placeholder,
-  staticData,
   fetchList,
   dataKey,
   customeLoading,
@@ -42,13 +41,7 @@ const AutoComplete = ({
     setLoading(true);
     try {
       let result;
-      if (staticData) {
-        result = staticData.filter((item) => {
-          return item.toLowerCase().includes(query.toLowerCase());
-        });
-      } else if (fetchList) {
-        result = await fetchList(query);
-      }
+      result = await fetchList(query);
       setSuggestions(result);
     } catch (error) {
       setError("Failed to fetch suggection list.");
@@ -59,7 +52,7 @@ const AutoComplete = ({
   };
 
   const handleSuggestionClick = (suggection) => {
-    setInputValue(dataKey ? suggection[dataKey] : dataKey);
+    setInputValue(dataKey && suggection[dataKey]);
     onSelect(suggection);
     setSuggestions([]);
   };
