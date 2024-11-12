@@ -17,6 +17,8 @@ const AutoComplete = ({
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [warning, setWarning] = useState(null);
+
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
   const handleInputChange = (event) => {
@@ -38,13 +40,16 @@ const AutoComplete = ({
 
   const getSuggestions = async (query) => {
     setError(null);
+    setWarning(null);
     setLoading(true);
     try {
       let result;
       result = await fetchList(query);
-      setSuggestions(result);
+      result.length > 0
+        ? setSuggestions(result)
+        : setWarning("No Result Found") && setSuggestions([]) && setError(null);
     } catch (error) {
-      setError("Failed to fetch suggection list.");
+      setWarning(null), setError("Failed to fetch suggection list.");
       setSuggestions([]);
     } finally {
       setLoading(false);
@@ -52,13 +57,14 @@ const AutoComplete = ({
   };
 
   const handleSuggestionClick = (suggection) => {
+    console.log("suggection", suggection);
     setInputValue(dataKey && suggection[dataKey]);
     onSelect(suggection);
     setSuggestions([]);
   };
 
   const getSuggestionsDebounced = useCallback(
-    debounce(getSuggestions, 300),
+    debounce(getSuggestions, 1000),
     []
   );
 
@@ -78,6 +84,7 @@ const AutoComplete = ({
         </h2>
         <input
           type="text"
+          autoFocus
           value={inputValue}
           placeholder={placeholder}
           style={customeStyles}
@@ -87,9 +94,10 @@ const AutoComplete = ({
           onKeyDown={handleKeyDown}
         />
 
-        {(suggestions.length > 0 || loading || error) && (
+        {(suggestions.length > 0 || loading || error || warning) && (
           <ul className="suggestions-list" role="listbox">
             {error && <div className="error">{error}</div>}
+            {warning && <div className="warning">{warning}</div>}
             {loading && <div className="loading">{customeLoading}</div>}
             <SuggestionsList
               dataKey={dataKey}

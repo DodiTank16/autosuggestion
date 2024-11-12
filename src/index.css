@@ -31,7 +31,8 @@ code {
 }
 
 .loading,
-.error {
+.error,
+.warning {
   padding: 10px;
   font-size: 14px;
   color: #555;
@@ -39,6 +40,10 @@ code {
 
 .error {
   color: red;
+}
+
+.warning {
+  color: orangered;
 }
 
 .suggestions-list {
@@ -55,7 +60,12 @@ code {
   margin: 0;
   padding: 0;
   list-style: none;
+  scrollbar-color: #e4e4e4;
+  scrollbar-width: thin;
+}
 
+.suggestions-list::-webkit-scrollbar {
+  display: none;
 }
 
 .suggestion-item {
